@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  password     String
+  image        String        @default("")
+  address1     String        @default("")
+  address2     String        @default("")
+  gender       String        @default("Not selected")
+  dob          String        @default("")
+  phone        String        @default("")
+  createdAt    DateTime      @default(now())
+  appointments Appointment[]
+}
+
+model Doctor {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  password     String
+  image        String
+  speciality   String
+  degree       String
+  experience   String
+  about        String
+  available    Boolean       @default(true)
+  fees         Int
+  address1     String
+  address2     String        @default("")
+  createdAt    DateTime      @default(now())
+  appointments Appointment[]
+}
+
+model Appointment {
+  id          String   @id @default(cuid())
+  userId      String
+  doctorId    String
+  slotDate    String
+  slotTime    String
+  amount      Int
+  cancelled   Boolean  @default(false)
+  paid        Boolean  @default(false)
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  doctor      Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([doctorId, slotDate, slotTime])
+}
