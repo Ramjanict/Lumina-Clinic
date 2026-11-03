@@ -10,6 +10,7 @@ A modern, full-stack doctor appointment booking and healthcare practice manageme
 |---|---|---|
 | **Frontend Web App** | **Vercel** | [https://luminaclinic.vercel.app](https://luminaclinic.vercel.app) |
 | **Backend REST API** | **Render** | [https://lumina-clinic-api.onrender.com](https://lumina-clinic-api.onrender.com) |
+| **Swagger API Documentation** | **Swagger UI** | [https://lumina-clinic-api.onrender.com/api/docs](https://lumina-clinic-api.onrender.com/api/docs) |
 | **API Health Check** | **Render** | [https://lumina-clinic-api.onrender.com/api/health](https://lumina-clinic-api.onrender.com/api/health) |
 
 ---
@@ -237,6 +238,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ---
 
 ## 📡 API Endpoints Overview
+
+The backend includes interactive **Swagger (OpenAPI)** documentation where HR, recruiters, and developers can test all endpoints directly in the browser:
+- **Live Swagger UI**: [https://lumina-clinic-api.onrender.com/api/docs](https://lumina-clinic-api.onrender.com/api/docs)
+- **Local Swagger UI**: [http://localhost:4000/api/docs](http://localhost:4000/api/docs)
+- **JWT Authorization**: Click the **Authorize 🔓** button in Swagger and paste your JWT Bearer token to test protected routes.
 
 | Method | Endpoint | Access | Description |
 |---|---|---|---|
