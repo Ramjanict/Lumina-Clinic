@@ -6,11 +6,11 @@
   "license": "ISC",
   "scripts": {
     "postinstall": "prisma generate",
-    "dev": "nest start --watch",
-    "start:dev": "nest start --watch",
-    "build": "nest build",
-    "start": "node dist/main.js",
-    "start:prod": "node dist/main.js",
+    "dev": "node init && nest start --watch",
+    "start:dev": "node init && nest start --watch",
+    "build": "node init && nest build",
+    "start": "node init && node dist/main.js",
+    "start:prod": "node init && node dist/main.js",
     "prisma:push": "prisma db push"
   },
   "dependencies": {
