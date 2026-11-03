@@ -12,10 +12,12 @@ import { specialities } from "@/lib/specialities";
 import type { Doctor } from "@/lib/types";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const portrait =
-  "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=900&q=80";
-const consult =
-  "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80";
+const portrait = "/doctor-1.jpg";
+
+
+const consult = "/clinic-consultation.jpg";
+
+
 
 export default function HomePage() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
