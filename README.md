@@ -4,6 +4,28 @@ A modern, full-stack doctor appointment booking and healthcare practice manageme
 
 ---
 
+## 🔗 Live Deployments
+
+| Component | Platform | Live URL |
+|---|---|---|
+| **Frontend Web App** | **Vercel** | [https://luminaclinic.vercel.app](https://luminaclinic.vercel.app) |
+| **Backend REST API** | **Render** | [https://lumina-clinic-api.onrender.com](https://lumina-clinic-api.onrender.com) |
+| **API Health Check** | **Render** | [https://lumina-clinic-api.onrender.com/api/health](https://lumina-clinic-api.onrender.com/api/health) |
+
+---
+
+## 🔑 Demo & Test Credentials
+
+All users log in through the same unified sign-in page: **[https://luminaclinic.vercel.app/login](https://luminaclinic.vercel.app/login)**. The backend automatically identifies the role and routes the user to their designated dashboard.
+
+| Role | Portal URL | Email | Password | Role Description |
+|---|---|---|---|---|
+| 🛡️ **Clinic Admin** | `/admin` | `admin@gmail.com` | `admin@12345` | Full clinic management: view all visits, onboard doctors, toggle doctor availability, confirm counter payments, and view 14-day revenue analytics. |
+| 🩺 **Doctor** | `/doctor` | *Onboarded by Admin* | *Set by Admin* | Manage patient appointments, complete visits (auto-records fee collection), cancel visits, and update fees/bio/availability. |
+| 🧑‍💼 **Patient** | `/appointments` | *Self-registered* | *User password* | Book 30-min consultation slots, view visit history, cancel upcoming visits, and update personal health profile. *(Click "Create an account" on the login page)* |
+
+---
+
 ## 🌟 Key Features
 
 ### 🧑‍💼 Patient Portal
@@ -62,7 +84,7 @@ Doctor-appointment-booking-app/
 │   │   ├── prisma/                 # Prisma client service lifecycle
 │   │   ├── users/                  # Patient profile & avatar management
 │   │   ├── app.module.ts           # Root module registering all submodules
-│   │   └── main.ts                 # NestJS application bootstrap & CORS configuration
+│   │   └── main.ts                 # NestJS bootstrap & CORS configuration
 │   └── package.json
 │
 ├── frontend/
@@ -82,7 +104,10 @@ Doctor-appointment-booking-app/
 │   │   │   ├── dashboard-shell.tsx # Responsive sidebar for Admin and Doctor studios
 │   │   │   └── doctors-browser.tsx # Doctor grid with interactive search & filters
 │   │   └── lib/                    # API client, auth context, slot math, validators
+│   ├── vercel.json                 # Vercel Next.js framework configuration
 │   └── package.json
+│
+├── render.yaml                     # Render Web Service blueprint
 └── README.md
 ```
 
@@ -142,7 +167,7 @@ erDiagram
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Local Development Setup
 
 ### Prerequisites
 - Node.js (v18.x or v20.x+)
@@ -177,14 +202,14 @@ PORT=4000
 FRONTEND_URL="http://localhost:3000"
 ```
 
-Sync the database schema and start the dev server:
+Sync database schema and start the dev server:
 
 ```bash
 npx prisma db push
 npm run dev
 ```
 
-The API will be running on `http://localhost:4000`.
+The API will listen on `http://localhost:4000`.
 
 ---
 
@@ -211,62 +236,58 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🔑 Default Roles & Access
-
-| Role | Access URL | How to Sign In |
-|---|---|---|
-| **Admin** | `/admin` | Use `ADMIN_EMAIL` and `ADMIN_PASSWORD` from `backend/.env`<br>*(Default: `admin@gmail.com` / `admin@12345`)* |
-| **Doctor** | `/doctor` | Created by the Admin in `/admin/doctors/new`. Use assigned email & password. |
-| **Patient** | `/appointments` | Register at `/register` or sign in at `/login`. |
-
-> **Single Sign-On Experience**: All users log in through the same `/login` form. The backend automatically determines the user role and routes them directly to their corresponding workspace.
-
----
-
 ## 📡 API Endpoints Overview
 
 | Method | Endpoint | Access | Description |
 |---|---|---|---|
+| `GET`  | `/api/health` | Public | Service health check |
 | `POST` | `/api/auth/register` | Public | Register a new patient account |
 | `POST` | `/api/auth/login` | Public | Unified sign-in for Patients, Doctors, and Admin |
-| `GET` | `/api/doctors` | Public | List all doctors (supports `?speciality=...`) |
-| `GET` | `/api/doctors/:id` | Public | Doctor detail + booked slot list for calendar sync |
-| `GET` | `/api/doctors/admin` | Admin | Doctor roster with appointment volume metrics |
+| `GET`  | `/api/doctors` | Public | List all doctors (supports `?speciality=...`) |
+| `GET`  | `/api/doctors/:id` | Public | Doctor detail + booked slot list for calendar sync |
+| `GET`  | `/api/doctors/admin` | Admin | Doctor roster with appointment volume metrics |
 | `POST` | `/api/doctors` | Admin | Onboard new physician (with image upload) |
 | `PATCH`| `/api/doctors/:id/availability` | Admin | Toggle doctor availability status |
-| `GET` | `/api/doctors/me` | Doctor | Fetch logged-in doctor's profile |
+| `GET`  | `/api/doctors/me` | Doctor | Fetch logged-in doctor's profile |
 | `PATCH`| `/api/doctors/me` | Doctor | Update practice fees, availability, bio, address |
 | `POST` | `/api/appointments` | Patient | Book a 30-min consultation slot |
-| `GET` | `/api/appointments/me` | Patient | View logged-in patient's visits |
-| `GET` | `/api/appointments/doctor` | Doctor | View logged-in doctor's schedule |
-| `GET` | `/api/appointments` | Admin | View all clinic appointments |
+| `GET`  | `/api/appointments/me` | Patient | View logged-in patient's visits |
+| `GET`  | `/api/appointments/doctor` | Doctor | View logged-in doctor's schedule |
+| `GET`  | `/api/appointments` | Admin | View all clinic appointments |
 | `POST` | `/api/appointments/:id/cancel` | User / Doc / Admin | Cancel scheduled visit |
 | `POST` | `/api/appointments/:id/complete`| Doctor | Mark appointment complete & fee collected |
 | `POST` | `/api/appointments/:id/paid` | Admin | Mark appointment fee paid at clinic desk |
-| `GET` | `/api/dashboard/admin` | Admin | Summary metrics, revenue, 14-day series, specialities |
-| `GET` | `/api/dashboard/doctor` | Doctor | Practice metrics, patient volume, 14-day series |
-| `GET` | `/api/users/me` | Patient | Get patient profile details |
+| `GET`  | `/api/dashboard/admin` | Admin | Summary metrics, revenue, 14-day series, specialities |
+| `GET`  | `/api/dashboard/doctor` | Doctor | Practice metrics, patient volume, 14-day series |
+| `GET`  | `/api/users/me` | Patient | Get patient profile details |
 | `PATCH`| `/api/users/me` | Patient | Update patient profile & avatar |
 
 ---
 
-## 🚢 Deployment
+## 🚢 Production Deployment
 
-### Backend (Node / VPS / Render / Railway / Fly.io)
-1. Set all environment variables on your platform.
-2. Ensure `FRONTEND_URL` points to your public frontend origin (e.g., `https://your-domain.com`).
-3. Run:
-   ```bash
-   npm install
-   npx prisma db push
-   npm run build
-   npm run start:prod
-   ```
+### Backend (Render)
+1. **Service Type**: Web Service
+2. **Root Directory**: `backend`
+3. **Build Command**: `npm install && npx prisma db push && npm run build`
+4. **Start Command**: `npm run start:prod`
+5. **Environment Variables**:
+   - `DATABASE_URL` = Your Neon connection string
+   - `JWT_SECRET` = Your JWT secret
+   - `JWT_EXPIRES_IN` = `7d`
+   - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
+   - `ADMIN_EMAIL` = `admin@gmail.com`
+   - `ADMIN_PASSWORD` = `admin@12345`
+   - `FRONTEND_URL` = `https://luminaclinic.vercel.app`
 
-### Frontend (Vercel / Netlify / Cloudflare)
-1. Connect your repository to Vercel or your preferred host.
-2. Set `NEXT_PUBLIC_API_URL` to your production backend URL (no trailing slash).
-3. Deploy! Next.js will build and serve all static and dynamic pages automatically.
+*(Or deploy automatically using the included [`render.yaml`](./render.yaml) blueprint).*
+
+### Frontend (Vercel)
+1. **Framework Preset**: `Next.js`
+2. **Root Directory**: `frontend`
+3. **Environment Variables**:
+   - `NEXT_PUBLIC_API_URL` = `https://lumina-clinic-api.onrender.com`
+4. Deploy!
 
 ---
 
